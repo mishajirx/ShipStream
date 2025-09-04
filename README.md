@@ -1,8 +1,16 @@
 # "RostovExpress" Delivery Service #
 
+**RostovExpress** - reliable and fast delivery service in Rostov-on-Don!
+
+We offer a wide range of goods delivery services: from small parcels to large-sized cargo. Our team of professional couriers is always ready to promptly deliver your order, preserving its integrity and safety.
+
+Our prices are affordable and competitive in the delivery market in Rostov-on-Don.
+
+Don't waste time going to the store or waiting for your order - trust us and we will deliver your parcel on time and safe and sound. Order delivery on the RostovExpress website today!
+
 # LINK: https://mzhernevskii.pythonanywhere.com #
 
-# Idea #
+## Technical Description ##
 The service allows users to register in the system and take on various roles: regular user, courier, admin.
 
 Each role has its own possibilities:
