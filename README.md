@@ -8,7 +8,7 @@ Our prices are affordable and competitive in the delivery market in Rostov-on-Do
 
 Don't waste time going to the store or waiting for your order - trust us and we will deliver your parcel on time and safe and sound. Order delivery on the RostovExpress website today!
 
-# LINK: https://mzhernevskii.pythonanywhere.com #
+# LINK[https://mzhernevskii.pythonanywhere.com] #
 
 ## Technical Description ##
 The service allows users to register in the system and take on various roles: regular user, courier, admin.
