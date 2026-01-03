@@ -1,77 +1,90 @@
-# "RostovExpress" Delivery Service #
+# ShipStream - Portable Delivery Service Platform
 
-**RostovExpress** - reliable and fast delivery service in Rostov-on-Don!
+An open-source, customizable delivery service application designed for small businesses to quickly deploy their own local delivery operations.
 
-We offer a wide range of goods delivery services: from small parcels to large-sized cargo. Our team of professional couriers is always ready to promptly deliver your order, preserving its integrity and safety.
+## What Is This?
 
-Our prices are affordable and competitive in the delivery market in Rostov-on-Don.
+This project provides a ready-to-use delivery service platform that small businesses can fork, customize, and deploy for their own needs. Whether you're running a local shop, restaurant, or any business requiring delivery logistics, this template gives you:
 
-Don't waste time going to the store or waiting for your order - trust us and we will deliver your parcel on time and safe and sound. Order delivery on the RostovExpress website today!
+- A complete user registration and role management system
+- Order placement and tracking functionality
+- Courier management with ratings
+- Admin controls for hiring and managing staff
+- A full REST API for integration with other systems
 
-# [LINK](https://mzhernevskii.pythonanywhere.com)  #
+Simply clone the repository, customize the branding, and deploy—no need to build a delivery platform from scratch.
 
-## Technical Description ##
-The service allows users to register in the system and take on various roles: regular user, courier, admin.
+## Live Demo
+**[View Demo](https://mzhernevskii.pythonanywhere.com)**
 
-Each role has its own possibilities:
-1. The user can order delivery.
-2. The courier delivers, receives money, and earns a rating.
-3. The admin has the right to hire and dismiss couriers, promote other users to the admin status.
+---
 
-Also, the service represents a REST API. The API gives the user both admin and courier rights simultaneously.
+## Features & User Roles
 
-The main admin is always present in the database, allowing the appointment of couriers and admins.
+The platform supports three distinct user roles:
 
-## Transferring the Repository Folder to Your Computer ##
-1. Click the fork button in the repository https://github.com/mishajirx/RostovExpress
-2. Open the command line
-3. Navigate to the folder of your choice
-4. Enter the command git clone https://github.com/<YourName>/RostovExpress
+**Regular Users** can place delivery orders and track their status.
 
-## Installing Required Software ##
-#### To download the necessary libraries, follow these steps: ####
-0. Perform all actions listed below in the terminal
-1. Navigate to the project directory in the command line
-2. Execute pip install -r requirements.txt
-#### Example ####
-$ pip install -r requirements.txt
+**Couriers** accept and complete deliveries, receive payments, and build their rating over time.
 
-## Running the Application ##
-To run the application, simply execute in the console
-python3 main.py (or sudo python main.py)
-#### Example #### 
-$ python3 main.py
+**Admins** hire and dismiss couriers, and can promote users to admin status.
 
-## Running Tests ##
-To run tests, you need to:
-1. Repeat the steps from the "Running the Application" section
-2. Press ctrl+z. Execute bg
-3. Execute pytest-3 test.py -x -s
-4. Enter 'y'
-#### Example: ####
-$ sudo python3 main.py
-$ ^Z
-& bg
-$ pytest-3 test.py -x -s
+The REST API provides both admin and courier privileges, enabling seamless integration with external systems. A default admin account is always present in the database to bootstrap your team.
 
-## Auto Start ##
-To make the server start on system boot, enter the following commands in the console:
-1. crontab -e
-2. In the opened file, type the following in the last line:
-   @reboot python3 /path_to_the_project/main.py
+---
 
-## Additional
-#### User Types:
-1. Courier
-2. Admin
-3. Bot
-#### Bot capabilities:
-1. Place an order (/orders)
-2. Submit a courier application
-#### Admin capabilities:
-1. Approve courier applications (/couriers)
-#### Courier capabilities:
-1. Accept orders (/orders/assign)
-2. Change their parameters (/courier/<courier_id>)
-3. Complete an order (orders/complete)
-4. Get information about themselves (/couriers/<couriers_id>)
+## Getting Started
+
+### 1. Fork & Clone the Repository
+
+1. Click the **Fork** button at [github.com/mishajirx/RostovExpress](https://github.com/mishajirx/RostovExpress)
+2. Open your terminal and navigate to your preferred directory
+3. Run: `git clone https://github.com/<YourUsername>/RostovExpress`
+
+### 2. Install Dependencies
+
+Navigate to the project directory and install requirements:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the Application
+
+```bash
+python3 main.py
+```
+
+### 4. Run Tests
+
+1. Start the application as shown above
+2. Press `Ctrl+Z`, then run `bg` to background the process
+3. Execute: `pytest-3 test.py -x -s`
+4. Confirm with `y` when prompted
+
+### 5. Auto-Start on Boot (Optional)
+
+To launch the server automatically on system startup:
+
+1. Run `crontab -e`
+2. Add this line at the end: `@reboot python3 /path_to_project/main.py`
+
+---
+
+## API Endpoints Reference
+
+| Role | Endpoint | Function |
+|------|----------|----------|
+| Bot/User | `/orders` | Place an order |
+| Bot/User | — | Submit courier application |
+| Admin | `/couriers` | Approve courier applications |
+| Courier | `/orders/assign` | Accept available orders |
+| Courier | `/courier/<courier_id>` | Update courier parameters |
+| Courier | `/orders/complete` | Mark order as completed |
+| Courier | `/couriers/<courier_id>` | Get courier information |
+
+---
+
+## Customization
+
+To adapt this platform for your business, you'll want to update the branding, modify the frontend styling, and configure your database connection. The modular structure makes it straightforward to add new features or integrate with your existing systems.
