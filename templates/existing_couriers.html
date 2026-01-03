@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Курьеры в системе</h1>
+<h1>Couriers in System</h1>
 {% for item in items %}
 <div>
-    <h2>Курьер - {{item.name}}</h2>
-    <a class="btn btn-danger" style="width: 180px; height:80px" href="/couriers/delete/{{item.id}}">Удалить
-        курьера</a>
+    <h2>Courier - {{item.name}}</h2>
+    <a class="btn btn-danger" style="width: 180px; height:80px" href="/couriers/delete/{{item.id}}">Delete Courier</a>
 </div>
 {% endfor %}
 {% endblock %}

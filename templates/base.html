@@ -12,16 +12,16 @@
 <body style="background-color: #effff7">
 <header>
     <nav class="navbar navbar-light" style="background-color: #d2f0e1">
-        <a class="navbar-brand" href="#">РостовExpress</a>
+        <a class="navbar-brand" href="#">ShipStream</a>
         {% if current_user.is_authenticated %}
 
             <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
-            <a class="btn btn-outline-secondary" style="font-size: medium; text-align: justify" href="/">Домой</a>
+            <a class="btn btn-outline-secondary" style="font-size: medium; text-align: justify" href="/">Home</a>
 
         {% else %}
             <p>
-                <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-                <a class="btn btn-success" href="/login">Войти</a>
+                <a class="btn btn-primary " href="/register">Register</a>
+                <a class="btn btn-success" href="/login">Log in</a>
             </p>
         {% endif %}
     </nav>
@@ -36,13 +36,12 @@
 
             <li class="nav-item"><a
                     href="https://docs.google.com/document/d/181rVJnixCkqp7kEEYyXy6jRmIWrEmT0YMYidJ4JE5xg/edit?usp=sharing"
-                    class="nav-link px-2 text-muted">О проекте</a></li>
-            <li class="nav-item"><a href="/donations" class="nav-link px-2 text-muted">Помощь проекту</a></li>
-            <li class="nav-item"><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="nav-link px-2 text-muted">Слив
-                ЕГЭ 2023</a></li>
+                    class="nav-link px-2 text-muted">About Project</a></li>
+            <li class="nav-item"><a href="/donations" class="nav-link px-2 text-muted">Project Support</a></li>
+            <li class="nav-item"><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="nav-link px-2 text-muted">USE 2023 Leaks</a></li>
 
         </ul>
-        <p class="text-center text-muted">©2023 РостовExpress</p>
+        <p class="text-center text-muted">©2023 ShipStream</p>
     </footer>
 </div>
 

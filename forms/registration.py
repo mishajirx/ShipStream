@@ -7,11 +7,11 @@ from wtforms_alchemy import PhoneNumberField
 
 
 class RegisterForm(FlaskForm):
-    phone_number = PhoneNumberField("Телефон в формате +7 XXX XXX XX XX", validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
-    name = StringField('ФИО', validators=[DataRequired()])
-    is_courier = BooleanField("Хочу быть курьером")
-    s = "(Для курьеров: <тип>;<регион1>,<регион2>,...;<РабочиеЧасы1(HH:MM-HH:MM)>,<РабочиеЧасы2>,..."
-    about = TextAreaField("Немного о себе " + s)
-    submit = SubmitField('Войти')
+    phone_number = PhoneNumberField("Phone number (format: +7 XXX XXX XX XX)", validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    password_again = PasswordField('Repeat Password', validators=[DataRequired()])
+    name = StringField('Full Name', validators=[DataRequired()])
+    is_courier = BooleanField("I want to be a courier")
+    s = "(For couriers: <type>;<region1>,<region2>,...;<WorkHours1(HH:MM-HH:MM)>,<WorkHours2>,..."
+    about = TextAreaField("A bit about yourself " + s)
+    submit = SubmitField('Register')

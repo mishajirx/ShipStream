@@ -6,7 +6,7 @@ from wtforms_alchemy import PhoneNumberField
 
 
 class LoginForm(FlaskForm):
-    phone_number = PhoneNumberField("Телефон в формате +7 XXX XXX XX XX", validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Запомнить меня')
-    submit = SubmitField('Войти')
+    phone_number = PhoneNumberField("Phone number (format: +7 XXX XXX XX XX)", validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember me')
+    submit = SubmitField('Log in')

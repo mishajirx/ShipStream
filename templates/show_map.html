@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container" , style="align-items: center">
-        <h1>Заказы и курьеры на карте</h1>
-        <div>
-            <img src={{ url_for("static", filename=file) }}>
-        </div>
-        <a class="btn btn-success" style="width: 180px; height:80px" href=javascript:history.back()>Назад</a>
+<div class="container" , style="align-items: center">
+    <h1>Orders and couriers on map</h1>
+    <div>
+        <img src={{ url_for("static", filename=file) }}>
     </div>
+    <a class="btn btn-success" style="width: 180px; height:80px" href=javascript:history.back()>Back</a>
+</div>
 {% endblock %}

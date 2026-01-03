@@ -6,7 +6,7 @@ import requests
 HOST = '127.0.0.1'
 PORT = 5000
 URL = f'http://{HOST}:{PORT}'
-parser = argparse.ArgumentParser(  # объект обрабатывающий аргументы(как в функции)
+parser = argparse.ArgumentParser(  # object processing arguments (like in a function)
     description="convert integers to decimal system")
 parser.add_argument('--clear', default='0', type=str, help='need to delete all data?(yes(1)/no(0))')
 
@@ -83,13 +83,13 @@ def clear_db(data):
     # print(response, response.json())
 
 
-"""Тест соединения"""
+"""Connection Test"""
 
 
 def test_connection():
-    print('Внимание, Тестирование запустит очистку базы данных')
+    print('Attention, Testing will trigger database cleanup')
     ans = 'y'
-    # ans = input('Продолжить?(y/n)')
+    # ans = input('Continue?(y/n)')
     assert ans == 'y'
     test_url = f'{URL}/api/test'
     response = requests.get(test_url)
@@ -102,7 +102,7 @@ def test_connection():
     clear_db({'code': 'zhern0206eskiy'})
 
 
-""" Основные тесты"""
+""" Main Tests"""
 
 
 def test_post_couriers_normal_data():
@@ -127,7 +127,7 @@ def test_post_couriers_normal_data():
                 "working_hours": ['22:00-22:30']
             }
         ]
-    })  # добавление курьеров (нормальные данные)
+    })  # adding couriers (normal data)
     assert res.status_code == 201 and res.json() == {'couriers': [{'id': 1}, {'id': 2}, {'id': 3}]}
     # {'couriers': [{'id': 1}, {'id': 2}, {'id': 3}]}
 
@@ -154,7 +154,7 @@ def test_post_couriers_repeating_id():
                 "working_hours": []
             }
         ]
-    })  # повторение айдишников (ошибка)
+    })  # repeating ids (error)
     assert res.status_code == 400 and res.json() == \
            {'validation_error': [{'errors': [{'loc': ['id'],
                                               'msg': 'Invalid id: There is a courier with '
@@ -197,7 +197,7 @@ def test_post_couriers_wrong_field():
                 "foo": 2
             }
         ]
-    })  # несуществующее поле (ошибка)
+    })  # non-existent field (error)
     assert res.status_code == 400 and res.json() == \
            {'validation_error': [{'errors': [{'loc': ['foo'],
                                               'msg': 'extra fields not permitted',
@@ -228,7 +228,7 @@ def test_post_couriers_wrong_value():
                 "working_hours": [],
             }
         ]
-    })  # несуществующее поле (ошибка)
+    })  # non-existent field (error)
     assert res.status_code == 400 and res.json() == \
            {'validation_error': [{'errors': [{'loc': ['regions', 1],
                                               'msg': 'value is not a valid integer',
@@ -247,7 +247,7 @@ def test_post_couriers_wrong_wh_format():
                 "working_hours": ['uyfyjcyjtc'],
             }
         ]
-    })  # неверный формат рабочих часов
+    })  # invalid working hours format
     assert res.status_code == 400 and res.json() == \
            {'validation_error': [{'errors': [{'loc': ['working_hours'],
                                               'msg': 'invalid working hours format',
@@ -265,7 +265,7 @@ def test_post_couriers_wrong_wh_numbers():
                 "working_hours": ['16:0h-1g:01'],
             }
         ]
-    })  # неверный формат рабочих часов
+    })  # invalid working hours format
     assert res.status_code == 400 and res.json() == \
            {'validation_error': [{'errors': [{'loc': ['working_hours'],
                                               'msg': 'invalid literal for int() with base '
@@ -279,7 +279,7 @@ def test_patch_couriers_all_params():
         "regions": [11, 33, 2],
         "working_hours": ['12:00-12:30'],
         'courier_type': 'car'
-    })  # изменение всех параметров (нормальные данные)
+    })  # changing all parameters (normal data)
     assert res.status_code == 200 and res.json() == {'courier_id': '1', 'courier_type': 'car',
                                                      'regions': [11, 33, 2],
                                                      'working_hours': ['12:00-12:30']}
@@ -289,7 +289,7 @@ def test_patch_couriers_any_params():
     res = edit_courier(1, {
         "regions": [11, 2],
         "working_hours": ['11:00-15:30'],
-    })  # изменение не всех параметров (нормальные данные)
+    })  # changing not all parameters (normal data)
     assert res.status_code == 200 and res.json() == {'courier_id': '1', 'courier_type': 'car',
                                                      'regions': [11, 2],
                                                      'working_hours': ['11:00-15:30']}
@@ -298,7 +298,7 @@ def test_patch_couriers_any_params():
 def test_patch_couriers_wrong_params():
     res = edit_courier(1, {
         'bar': 123
-    })  # изменение несуществующего параметра (ошибка)
+    })  # changing a non-existent parameter (error)
     assert res.status_code == 400 and res.json() == \
            {'errors': [
                {'loc': ['bar'], 'msg': 'extra fields not permitted', 'type': 'value_error.extra'}]}
@@ -307,7 +307,7 @@ def test_patch_couriers_wrong_params():
 def test_patch_couriers_wrong_id():
     res = edit_courier(10, {
         'regions': [1, 2, 3]
-    })  # изменение несуществующего курьера (ошибка)
+    })  # changing a non-existent courier (error)
     assert res.status_code == 404 and res.json() == {'message': 'no courier with this id'}
 
 
@@ -333,7 +333,7 @@ def test_post_orders_normal_data():
                 "delivery_hours": ["09:00-12:00", "16:00-21:30"]
             }
         ]
-    })  # добавление заказов (нормальные данные)
+    })  # adding orders (normal data)
     assert res.status_code == 201 and res.json() == {'orders': [{'id': 1}, {'id': 2}, {'id': 3}]}
 
 
@@ -359,7 +359,7 @@ def test_post_orders_repeating_id():
                 "delivery_hours": ["09:00-12:00", "16:00-21:30"]
             }
         ]
-    })  # повторение айди (ошибка)
+    })  # repeating id (error)
     assert res.status_code == 400 and res.json() == \
            {'validation_error': [{'errors': [{'loc': ['id'],
                                               'msg': 'Invalid id: There is a order with '
@@ -391,7 +391,7 @@ def test_post_orders_odd_field():
                 "delivery_hours": ["09:00-12:00", "16:00-21:30"]
             }
         ]
-    })  # несуществующее поле (ошибка)
+    })  # non-existent field (error)
     assert res.status_code == 400 and res.json() == \
            {'validation_error': [{'errors': [{'loc': ['fjhfbgudrgbdiu'],
                                               'msg': 'extra fields not permitted',
@@ -435,7 +435,7 @@ def test_post_orders_too_big_weight():
                 "delivery_hours": ["09:00-12:00", "16:00-21:30"]
             }
         ]
-    })  # слишком большой вес (ошибка)
+    })  # weight too big (error)
     assert res.status_code == 400 and res.json() == \
            {'validation_error': [{'errors': [{'loc': ['weight'],
                                               'msg': 'weight should be between 0.01 and '
@@ -466,7 +466,7 @@ def test_post_orders_too_small_weight():
                 "delivery_hours": ["09:00-12:00", "16:00-21:30"]
             }
         ]
-    })  # слишком маленький вес (ошибка)
+    })  # weight too small (error)
     assert res.status_code == 400 and res.json() == {
         'validation_error': [{'errors': [{'loc': ['weight'],
                                           'msg': 'weight should be between 0.01 and '
@@ -476,24 +476,24 @@ def test_post_orders_too_small_weight():
 
 
 def test_assign_orders_courier_with_some_orders():
-    res = assign_orders(1)  # назначение заказов курьеру 1 (нормальные данные)
+    res = assign_orders(1)  # assigning orders to courier 1 (normal data)
     assert res.status_code == 200 and res.json() == {'orders': []}
 
 
 def test_assign_orders_courier_without_orders():
-    res = assign_orders(2)  # назначение заказов курьеру 2 (нормальные данные)
+    res = assign_orders(2)  # assigning orders to courier 2 (normal data)
     t = str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
     assert res.status_code == 200 and check_assign_time(res.json(),
                                                         {'assign_time': t, 'orders': [{'id': 3}]})
 
 
 def test_assign_orders_wrong_courier():
-    res = assign_orders(4)  # назначение заказов курьеру 3 (ошибка)
+    res = assign_orders(4)  # assigning orders to courier 3 (error)
     assert res.status_code == 400
 
 
 def test_assign_orders_idempotent_proof():
-    res1 = assign_orders(2)  # назначение заказов курьеру 2 (нормальные данные)
+    res1 = assign_orders(2)  # assigning orders to courier 2 (normal data)
     res2 = assign_orders(2)
     t = str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
     assert res1.status_code == res2.status_code == 201 and \
@@ -507,7 +507,7 @@ def test_complete_orders_right_order_and_courier():
         "courier_id": 2,
         "order_id": 3,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # выполнение курьером 2 заказа 3 (нормальные данные)
+    })  # completion by courier 2 of order 3 (normal data)
     assert res.status_code == 200 and res.json() == {'order_id': 3}
 
 
@@ -516,7 +516,7 @@ def test_complete_orders_right_data_idempotent_proof():
         "courier_id": 2,
         "order_id": 3,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # выполнение курьером 2 заказа 3 (нормальные данные) доказываем идемпотентность
+    })  # completion by courier 2 of order 3 (normal data) proving idempotency
     res2 = complete_orders({
         "courier_id": 2,
         "order_id": 3,
@@ -531,7 +531,7 @@ def test_complete_orders_courier_and_order_dont_match():
         "courier_id": 1,
         "order_id": 3,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # выполнение курьером 1 заказа 3 (ошибка)
+    })  # completion by courier 1 of order 3 (error)
     assert res.status_code == 400 and res.json() == {'message': 'courier and order don\'t match'}
 
 
@@ -540,7 +540,7 @@ def test_complete_orders_wrong_order():
         "courier_id": 2,
         "order_id": 10,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # выполнение курьером 2 заказа 1 (ошибка)
+    })  # completion by courier 2 of order 1 (error)
     assert res.status_code == 400 and res.json() == {'message': 'no order with this id'}
 
 
@@ -549,12 +549,12 @@ def test_complete_orders_wrong_courier():
         "courier_id": 4,
         "order_id": 5,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # выполнение курьером 4 заказа 5 (ошибка)
+    })  # completion by courier 4 of order 5 (error)
     assert res.status_code == 400 and res.json() == {'message': 'no courier with this id'}
 
 
 def test_get_courier_with_some_orders():
-    res = get_courier(3)  # информация о курьере 3 (нормальные данные)
+    res = get_courier(3)  # information about courier 3 (normal data)
     assert res.status_code == 200 and \
            res.json() == {'courier_id': '3', 'courier_type': 'car', 'earnings': 0,
                           'regions': [12, 22, 23, 33],
@@ -562,7 +562,7 @@ def test_get_courier_with_some_orders():
 
 
 def test_get_courier_without_any_orders():
-    res = get_courier(2)  # информация о курьере 2 (нормальные данные)
+    res = get_courier(2)  # information about courier 2 (normal data)
     assert res.status_code == 200 and res.json() == {'courier_id': '2', 'courier_type': 'bike',
                                                      'earnings': 2500,
                                                      'rating': 5.0, 'regions': [22],
@@ -570,11 +570,11 @@ def test_get_courier_without_any_orders():
 
 
 def test_get_courier_wrong_id():
-    res = get_courier(4)  # информация о курьере 4 (ошибка)
+    res = get_courier(4)  # information about courier 4 (error)
     assert res.status_code == 404
 
 
-""" Тест на то что при изменение данных о курьере заказ может стать свободным """
+""" Test that when changing courier data, the order can become free """
 
 
 def test_orders_untying_weight():
@@ -587,42 +587,42 @@ def test_orders_untying_weight():
                 "delivery_hours": ["22:00-22:15"]
             }
         ]
-    })  # добавили заказ с весом 40 (норм)
-    assign_orders(3)  # назначили его курьеру на машине (норм)
-    edit_courier(3, {'courier_type': 'foot'})  # он поменял тип (норм)
+    })  # added order with weight 40 (ok)
+    assign_orders(3)  # assigned it to a car courier (ok)
+    edit_courier(3, {'courier_type': 'foot'})  # he changed type (ok)
     res = complete_orders({
         "courier_id": 3,
         "order_id": 4,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # заказ больше не его (ошибка)
-    edit_courier(3, {'courier_type': 'car'})  # меняем обратно (ок)
+    })  # order is no longer his (error)
+    edit_courier(3, {'courier_type': 'car'})  # change back (ok)
     assert res.status_code == 400
 
 
 def test_orders_untying_time():
-    assign_orders(3)  # назначили его курьеру с подходящим временем (ок)
-    edit_courier(3, {'working_hours': ['12:00-13:00']})  # он поменял рабочее время (ок)
+    assign_orders(3)  # assigned it to a courier with suitable time (ok)
+    edit_courier(3, {'working_hours': ['12:00-13:00']})  # he changed working hours (ok)
     res = complete_orders({
         "courier_id": 3,
         "order_id": 4,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # заказ больше не его (ошибка)
-    edit_courier(3, {'working_hours': ['22:00-22:30']})  # меняем обратно (ок)
+    })  # order is no longer his (error)
+    edit_courier(3, {'working_hours': ['22:00-22:30']})  # change back (ok)
     assert res.status_code == 400
 
 
 def test_orders_untying_region():
-    assign_orders(3)  # назначили его курьеру с подходящим регионом (ок)
-    edit_courier(3, {'regions': [1]})  # он поменял рабочее время (ок)
+    assign_orders(3)  # assigned it to a courier with suitable region (ok)
+    edit_courier(3, {'regions': [1]})  # he changed regions (ok)
     res = complete_orders({
         "courier_id": 3,
         "order_id": 4,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # заказ больше не его (ошибка)
+    })  # order is no longer his (error)
     assert res.status_code == 400
 
 
-"""Тест на то что нельзя забрать уже назначенный заказ"""
+"""Test that you cannot take an already assigned order"""
 
 
 def test_orders_are_not_for_many_couriers():
@@ -641,7 +641,7 @@ def test_orders_are_not_for_many_couriers():
                 "working_hours": ["13:00-13:50"]
             }
         ]
-    })  # создадим двух почти одинаковых курьеров
+    })  # create two almost identical couriers
     add_orders({
         "data": [
             {
@@ -651,21 +651,21 @@ def test_orders_are_not_for_many_couriers():
                 "delivery_hours": ["13:30-13:41"]
             }
         ]
-    })  # добавим подходящий им заказ
-    assign_orders(6)  # один его получит
-    res1 = assign_orders(7)  # второй нет
+    })  # add suitable order for them
+    assign_orders(6)  # one will receive it
+    res1 = assign_orders(7)  # the second one won't
     complete_orders({
         "courier_id": 6,
         "order_id": 8,
         "complete_time": str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
-    })  # выполняет заказ
-    res2 = assign_orders(7)  # второй также не может получить его
+    })  # completes order
+    res2 = assign_orders(7)  # the second one also cannot receive it
     assert res1.status_code == res2.status_code == 200 and res1.json() == res2.json() == {
         'orders': []}
     # print(res1.json(), res2.json())
 
 
-"""Тест на чёткое распределение заказов"""
+"""Test for precise order distribution"""
 
 
 def test_assign_orders_right_orders_distributing():
@@ -678,7 +678,7 @@ def test_assign_orders_right_orders_distributing():
                 "working_hours": ["11:35-14:05", "09:00-11:00"]
             },
         ]
-    })  # добавление курьеров (нормальные данные)
+    })  # adding couriers (normal data)
     add_orders({
         "data": [
             {
@@ -700,7 +700,7 @@ def test_assign_orders_right_orders_distributing():
                 "delivery_hours": ["09:00-18:00"]
             }
         ]
-    })  # добавление заказов (нормальные данные)
+    })  # adding orders (normal data)
     res = assign_orders(100)
     clear_db({'code': 'zhern0206eskiy'})
     assert res.status_code == 200 and res.json()['orders'] == [{'id': 102}, {'id': 103}]

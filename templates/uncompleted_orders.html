@@ -1,70 +1,69 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Мои заказы</h1>
+<h1>My Orders</h1>
 
-    <a class="btn btn-info " href="/change_flag">
-        {% if current_user.show_completed %}
-            Скрыть выполненные заказы
+<a class="btn btn-info " href="/change_flag">
+    {% if current_user.show_completed %}
+    Hide completed orders
+    {% else %}
+    Show completed orders
+    {% endif %}
+</a>
+
+<a class="btn btn-primary " href="/orders/complete/map">Map of all orders</a>
+
+<br><br>
+
+{% for item in items %}
+<div class="container">
+
+    <h3>Order {{ item[0].id }} -
+        {% if item[2] == "" %}
+        New
+        {% elif item[0].complete_time == "" %}
+        In Transit
         {% else %}
-            Показать выполненные заказы
+        Delivered
         {% endif %}
-    </a>
 
-    <a class="btn btn-primary " href="/orders/complete/map">Карта всех заказов</a>
-
-    <br><br>
-
-    {% for item in items %}
-        <div class="container">
-
-            <h3>Заказ {{ item[0].id }} -
-                {% if item[2] == "" %}
-                    Новый
-                {% elif item[0].complete_time == "" %}
-                    В пути
-                {% else %}
-                    Доставлен
-                {% endif %}
-
-            </h3>
+    </h3>
 
 
-            <details>
-                <summary>
-                    Информация о заказе
-                </summary>
-                <div id="order_info{{ item[0].id }}">
-                    <h5>Вес </h5>
-                    <p> {{ item[0].weight }}</p>
-                    <h5>Регион </h5>
-                    <p> {{ item[0].region }}</p>
-                    <h5>Адрес </h5>
-                    <p> {{ item[0].address }}</p>
-                    <h5>Время доставки заказа </h5>
-                    <p>{{ item[1].hours }}</p>
+    <details>
+        <summary>
+            Order Information
+        </summary>
+        <div id="order_info{{ item[0].id }}">
+            <h5>Weight </h5>
+            <p> {{ item[0].weight }}</p>
+            <h5>Region </h5>
+            <p> {{ item[0].region }}</p>
+            <h5>Address </h5>
+            <p> {{ item[0].address }}</p>
+            <h5>Delivery Time </h5>
+            <p>{{ item[1].hours }}</p>
 
-                    <h5>Клиент </h5>
-                    <p>{{ item[3] }}</p>
+            <h5>Client </h5>
+            <p>{{ item[3] }}</p>
 
-                    <h5>Статус</h5>
-                    {% if item[2] == "" %}
-                        <h6>Новый</h6>
-                    {% elif item[0].complete_time %}
-                        <h6>Доставлен в {{ item[0].complete_time }} по Гринвичу</h6>
-                    {% else %}
-                        <h6>Заказ в пути</h6>
-                    {% endif %}
+            <h5>Status</h5>
+            {% if item[2] == "" %}
+            <h6>New</h6>
+            {% elif item[0].complete_time %}
+            <h6>Delivered at {{ item[0].complete_time }} (GMT)</h6>
+            {% else %}
+            <h6>Order in transit</h6>
+            {% endif %}
 
-
-                </div>
-            </details>
-
-            <a class="btn btn-primary" style="width: 180px; height:80px" href="/orders/view/{{ item[0].id }}">Открыть
-                карту заказа</a>
-            <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/complete/{{ item[0].id }}">Выполнить
-                заказ</a>
 
         </div>
-    {% endfor %}
+    </details>
+
+    <a class="btn btn-primary" style="width: 180px; height:80px" href="/orders/view/{{ item[0].id }}">Open Order Map</a>
+    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/complete/{{ item[0].id }}">Complete
+        Order</a>
+
+</div>
+{% endfor %}
 {% endblock %}

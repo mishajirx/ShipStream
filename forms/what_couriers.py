@@ -5,5 +5,5 @@ from wtforms.validators import DataRequired
 
 
 class NewCourierForm(FlaskForm):
-    couriers = SelectMultipleField(label='Хотят быть курьерами', coerce=int)
-    submit = SubmitField('Принять на работу')
+    couriers = SelectMultipleField(label='Want to be couriers', coerce=int)
+    submit = SubmitField('Hire')

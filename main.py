@@ -185,9 +185,9 @@ def login():
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
         return render_template('login.html',
-                               message="Неправильный логин или пароль",
+                               message="Invalid login or password",
                                form=form)
-    return render_template('login.html', title='Авторизация', form=form)
+    return render_template('login.html', title='Login', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -195,16 +195,16 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
-            return render_template('register.html', title='Регистрация',
+            return render_template('register.html', title='Registration',
                                    form=form,
-                                   message="Пароли не совпадают")
+                                   message="Passwords do not match")
         db_sess = db_session.create_session()
         raw_number = str(form.phone_number.data)
         print(raw_number)
         if db_sess.query(User).filter(User.phone_number == raw_number).first():
-            return render_template('register.html', title='Регистрация',
+            return render_template('register.html', title='Registration',
                                    form=form,
-                                   message="Пользователь c таким телефоном уже есть")
+                                   message="User with this phone already exists")
         user = User(
             name=form.name.data,
             phone_number=raw_number,
@@ -213,11 +213,11 @@ def register():
         )
         user.set_password(form.password.data)
         db_sess.add(user)
-        log_event(f"Пользователь {user.name} зарегистрировался на платформе", db_sess)
+        log_event(f"User {user.name} registered on the platform", db_sess)
         db_sess.commit()
 
         return redirect('/login')
-    return render_template('register.html', title='Регистрация', form=form)
+    return render_template('register.html', title='Registration', form=form)
 
 
 @app.route('/admins', methods=['GET', "POST"])
@@ -227,7 +227,7 @@ def make_admins():
         return redirect('/')
     db_sess = db_session.create_session()
     users = db_sess.query(User).all()
-    return render_template('existing_users.html', title='Существующие пользователи',
+    return render_template('existing_users.html', title='Existing Users',
                            items=users)
 
 
@@ -256,7 +256,7 @@ def make_admin(user_id):
             db_sess.delete(i)
         db_sess.delete(courier)
     user.user_type = 3
-    log_event(f"Пользователь {user.name} назначен админом", db_sess)
+    log_event(f"User {user.name} assigned as admin", db_sess)
     db_sess.commit()
 
     return render_template('result.html', u=str({"Status": 'Ok, now user is admin'}))
@@ -288,7 +288,7 @@ def add_couriers():
         bad_id = []
         is_ok = True
         if not req_json:
-            return render_template('result.html', u='Некорректная инфорация о курьере')
+            return render_template('result.html', u='Incorrect courier information')
         for courier_info in req_json:
             flag = False
             error_ans = []
@@ -325,19 +325,19 @@ def add_couriers():
                 wh.hours = i
                 db_sess.add(wh)
             db_sess.add(courier)
-            log_event(f"Пользователь {user.name} назначен курьером", db_sess)
+            log_event(f"User {user.name} assigned as courier", db_sess)
             res.append({"id": courier_info['courier_id']})
 
         if is_ok:
             db_sess.commit()
 
-            return render_template('result.html', u=str("Курьер добавлен"))
+            return render_template('result.html', u=str("Courier added"))
             # return jsonify({"couriers": res}), 201
         # pprint({"validation_error": bad_id})
         # print('-------------------------------------------------------------------------')
         return render_template('result.html', u=str({"validation_error": bad_id}))
         # return jsonify({"validation_error": bad_id}), 400
-    return render_template('available_couriers.html', title='Новый курьер', form=form)
+    return render_template('available_couriers.html', title='New Courier', form=form)
 
 
 @app.route('/couriers/delete', methods=["POST", 'GET'])
@@ -347,7 +347,7 @@ def list_couriers():
         return redirect('/')
     db_sess = db_session.create_session()
     users = db_sess.query(User).filter(User.user_type == 2).all()
-    return render_template('existing_couriers.html', title='Существующие курьеры', items=users)
+    return render_template('existing_couriers.html', title='Existing Couriers', items=users)
 
 
 @app.route('/couriers/delete/<user_id>', methods=["POST", 'GET'])
@@ -379,7 +379,7 @@ def delete_couriers(user_id):
     db_sess.delete(courier)
 
     db_sess.commit()
-    return render_template('result.html', u=f"Курьер {courier_id} удален")
+    return render_template('result.html', u=f"Courier {courier_id} deleted")
     # return jsonify({"courier_id": courier_id}), 200
 
 
@@ -424,14 +424,14 @@ def add_orders():
         order.orders_courier = 0
         order.user_id = current_user.id
         order.address = regions_table[order.region] + ' '
-        city_written = ("г." in form.address.data) or ("город" in form.address.data)
+        city_written = ("c." in form.address.data) or ("city" in form.address.data)
         if not city_written and order.region == 61:
             order.address += PRESENTATION_CITY
         order.address += form.address.data
         print(order.address)
         print(check_address(order.address))
         if not check_address(order.address):
-            return render_template('result.html', u=str("Некорректный адрес заказа, заказ отклонён"))
+            return render_template('result.html', u=str("Invalid order address, order rejected"))
 
         for i in list(order_info['delivery_hours']):
             dh = DH()
@@ -439,16 +439,16 @@ def add_orders():
             dh.hours = i
             db_sess.add(dh)
         db_sess.add(order)
-        log_event(f"Пользователь {current_user.name} сделал заказ на время {order_info['delivery_hours']}", db_sess)
+        log_event(f"User {current_user.name} ordered for time {order_info['delivery_hours']}", db_sess)
         res.append({"id": int(order_info['order_id'])})
 
         if is_ok:
             db_sess.commit()
             return render_template('result.html', u=str(
-                f"Заказ номер {order.id} создан. Заказ доступен для просмотра в разделе \"Мои заказы\"!"))
-        return render_template('result.html', u=str("Данные указаны некорректно"))
+                f"Order number {order.id} created. Order is available for viewing in \"My Orders\" section!"))
+        return render_template('result.html', u=str("Data is incorrect"))
 
-    return render_template('new_order.html', title='Новый заказ', form=form)
+    return render_template('new_order.html', title='New Order', form=form)
 
 
 @app.route('/couriers/edit', methods=["POST", 'GET'])
@@ -519,7 +519,7 @@ def edit_courier():
         courier.currentw += order.weight
         order.orders_courier = courier_id
     db_sess.commit()
-    return render_template('result.html', u="Данные изменены")
+    return render_template('result.html', u="Data changed")
 
 
 @app.route('/couriers/get', methods=["GET"])
@@ -596,7 +596,7 @@ def orders_on_map_for_admin():
     with open("static/" + map_file, "wb") as file:
         file.write(response.content)
 
-    return render_template('show_map.html', title="Все заказы на карте", file=map_file, backlink="/")
+    return render_template('show_map.html', title="All orders on map", file=map_file, backlink="/")
 
 
 @app.route('/orders/assign', methods=["POST", 'GET'])
@@ -617,7 +617,7 @@ def assign_orders():
         res = [{'id': i.id} for i in ords]
         # return jsonify({'orders': res, 'assign_time': courier.last_assign_time}), 201
         return render_template('result.html',
-                               u=f"У вас уже есть {len(res)} заказов")
+                               u=f"You already have {len(res)} orders")
     courier_regions = [i.region for i in
                        db_sess.query(Region).filter(Region.courier_id == courier_id).all()]
     courier_wh = db_sess.query(WH).filter(WH.courier_id == courier_id).all()
@@ -637,7 +637,7 @@ def assign_orders():
            db_sess.query(Order).filter(Order.orders_courier == courier_id,
                                        '' == Order.complete_time)]
     if not res:
-        return render_template('result.html', u="Заказов, подходящих под ваш график, пока нет")
+        return render_template('result.html', u="No orders matching your schedule yet")
         # return jsonify({"orders": []}), 200
     courier.last_pack_cost = kd[courier.maxw] * 500
     # t = str(datetime.datetime.utcnow()).replace(' ', 'T') + 'Z'
@@ -646,9 +646,9 @@ def assign_orders():
     assign_time = t
     if '' == courier.last_delivery_t:
         courier.last_delivery_t = assign_time
-    log_event(f"Курьеру {current_user.name} назначены заказы с номерами {res} в {t}", db_sess)
+    log_event(f"Courier {current_user.name} assigned orders with numbers {res} at {t}", db_sess)
     db_sess.commit()
-    return render_template('result.html', u=f"Назначено {len(res)} заказов")
+    return render_template('result.html', u=f"{len(res)} orders assigned")
     # return jsonify({"orders": res, 'assign_time': str(assign_time)}), 200
 
 
@@ -692,9 +692,9 @@ def complete_orders(order_id):
         courier.earnings += courier.last_pack_cost
         courier.last_pack_cost = 0
     db_sess.commit()
-    log_event(f"Курьер {current_user.name} выполнил заказ номер {order.id} в {order.complete_time}", db_sess)
+    log_event(f"Courier {current_user.name} completed order number {order.id} at {order.complete_time}", db_sess)
     # return jsonify({'order_id': order.id}), 200
-    return render_template('result.html', u=f"Заказ {order.id} выполнен")
+    return render_template('result.html', u=f"Order {order.id} completed")
 
 
 @app.route('/orders/complete/list', methods=['POST', 'GET'])
@@ -711,7 +711,7 @@ def list_orders():
 
     items.reverse()
 
-    return render_template('uncompleted_orders.html', title='Несделанные заказы', items=items)
+    return render_template('uncompleted_orders.html', title='Uncompleted Orders', items=items)
 
 
 @app.route('/orders/complete/map', methods=['POST', 'GET'])
@@ -757,7 +757,7 @@ def orders_on_map():
     with open("static/" + map_file, "wb") as file:
         file.write(response.content)
 
-    return render_template('show_map.html', title="Адрес и курьер", file=map_file, backlink="/orders/complete/list")
+    return render_template('show_map.html', title="Address and Courier", file=map_file, backlink="/orders/complete/list")
 
 
 @app.route('/users/edit', methods=['POST', 'GET'])
@@ -796,7 +796,7 @@ def change_about():
                     wh.hours = i
                     db_sess.add(wh)
                 db_sess.add(courier)
-                log_event(f"Пользователь {user.name} назначен курьером", db_sess)
+                log_event(f"User {user.name} assigned as courier", db_sess)
             db_sess.commit()
             return redirect('/')
         db_sess.commit()
@@ -809,7 +809,7 @@ def change_about():
     if parsed_about is not None:
         form.type_of_courier.data, form.region.data, form.workhours_start.data, form.workhours_end.data = parsed_about
 
-    return render_template('edit_user.html', form=form, title="Изменить резюме")
+    return render_template('edit_user.html', form=form, title="Edit Resume")
 
 
 @app.route('/orders/view', methods=['POST', 'GET'])
@@ -825,7 +825,7 @@ def get_user_orders():
     items = collect_info_about_orders(orders, db_sess, current_user.show_completed)
     items.reverse()
 
-    return render_template('existing_orders.html', title="Мои заказы", items=items)
+    return render_template('existing_orders.html', title="My Orders", items=items)
 
 
 @app.route('/orders/view/<order_id>', methods=['POST', 'GET'])
@@ -854,7 +854,7 @@ def get_map_of_order(order_id):
     with open("static/" + map_file, "wb") as file:
         file.write(response.content)
 
-    return render_template('show_map.html', title="Адрес и курьер", file=map_file)
+    return render_template('show_map.html', title="Address and Courier", file=map_file)
 
 
 @app.route('/orders/delete/<order_id>', methods=["POST", "GET"])
@@ -867,10 +867,10 @@ def delete_orders(order_id):
         # return jsonify({'message': 'no order with this id'}), 400
     db_sess.delete(order)
 
-    log_event(f"Заказ {order_id} был удалён", db_sess)
+    log_event(f"Order {order_id} was deleted", db_sess)
 
     db_sess.commit()
-    return render_template('result.html', u=f"Заказ {order_id} удален")
+    return render_template('result.html', u=f"Order {order_id} deleted")
     # return jsonify({"order_id": order_id}), 200
 
 
@@ -879,7 +879,7 @@ def delete_orders(order_id):
 def inside_about():
     if current_user.user_type > 1:
         return redirect('/')
-    return render_template('user_info.html', title="О пользователе", about=current_user.about)
+    return render_template('user_info.html', title="About User", about=current_user.about)
 
 
 # @app.route('/clear', methods=['POST', 'GET'])
@@ -935,7 +935,7 @@ def main():
 
 
 def create_app():
-    db_session.global_init("/home/mzhernevskii/RostovExpress/db/couriers.db")
+    db_session.global_init("/home/mzhernevskii/ShipStream/db/couriers.db")
     app.register_blueprint(shop_api.blueprint)
     return app
 

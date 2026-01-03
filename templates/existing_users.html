@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Пользователи в системе</h1>
+<h1>Users in System</h1>
 {% for item in items %}
 <div>
-    <h2>Пользователь - {{item.name}}</h2>
-    <a class="btn btn-success" style="width: 180px; height:80px" href="/admins/{{item.id}}">Сделать админом</a>
+    <h2>User - {{item.name}}</h2>
+    <a class="btn btn-success" style="width: 180px; height:80px" href="/admins/{{item.id}}">Make Admin</a>
 </div>
 {% endfor %}
 {% endblock %}

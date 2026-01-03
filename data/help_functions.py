@@ -125,7 +125,7 @@ def collect_info_about_orders(orders: list[Order], db_sess: db_session.Session, 
     for order in orders:
         list_of_couriers = db_sess.query(User).filter(User.c_id == order.orders_courier).all()
         if list_of_couriers:
-            courier_names.append(f"{list_of_couriers[0].name}, Телефон: {list_of_couriers[0].phone_number}")
+            courier_names.append(f"{list_of_couriers[0].name}, Phone: {list_of_couriers[0].phone_number}")
         else:
             courier_names.append("")
         client = db_sess.query(User).filter(User.id == order.user_id).first()

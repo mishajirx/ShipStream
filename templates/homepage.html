@@ -6,66 +6,53 @@
 
 
             {% if not current_user.is_authenticated %}
-                <h2 style="width: 65vw; text-align: center">Добро пожаловать на сайт "РостовExpress"!</h2>
+                <h2 style="width: 65vw; text-align: center">Welcome to ShipStream!</h2>
                 <div id="intro0" style="width: 65vw; font-size: medium; background-color: #DDFFED; border-radius: 10px">
-                    РостовExpress - надежный и быстрый сервис доставки в Ростове-на-Дону!<br><br>
+                    ShipStream - reliable and fast delivery service in Rostov-on-Don!<br><br>
 
                 </div>
                 <div id="intro1" style="width: 65vw; font-size: medium; background-color: #DDFFEF; border-radius: 10px">
 
-                    Мы предлагаем широкий спектр услуг по доставке товаров: от мелких посылок до крупногабаритных
-                    грузов. Наша команда профессиональных курьеров всегда готова оперативно доставить ваш заказ,
-                    сохраняя его целостность и сохранность.<br><br>
+                    We offer a wide range of goods delivery services: from small parcels to large-sized cargo. Our team of professional couriers is always ready to promptly deliver your order, preserving its integrity and safety.<br><br>
 
                 </div>
                 <div id="intro2" style="width: 65vw; font-size: medium; background-color: #DDFFF3; border-radius: 10px">
 
-                    Наши цены доступны и конкурентоспособны на рынке доставки в Ростове-на-Дону.<br><br>
+                    Our prices are affordable and competitive in the delivery market in Rostov-on-Don.<br><br>
 
                 </div>
                 <div id="intro3" style="width: 65vw; font-size: medium; background-color: #DDFFF8; border-radius: 10px">
 
-                    Не теряйте время на поездки в магазин или ожидание заказа - доверьтесь нам и мы доставим вашу
-                    посылку вовремя и в целости и сохранности. Заказывайте доставку на сайте "РостовExpress" уже
-                    сегодня!<br><br>
+                    Don't waste time going to the store or waiting for your order - trust us and we will deliver your
+                    parcel on time and safe and sound. Order delivery on the ShipStream website today!<br><br>
                 </div>
                 <div id="intro4" style="width: 65vw; font-size: medium; background-color: #DDFFFD; border-radius: 10px">
 
-                    Чтобы начать работу <a href="/register">зарегистрируйтесь на сайте</a>
+                    To start, <a href="/register">register on the site</a>
                 </div>
 
             {% else %}
                 {% if current_user.user_type < 3 %}
-                    <a class="btn btn-success" style="width: 180px; height:80px;" href="/orders">Сделать
-                        заказ</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px;" href="/orders">Place Order</a>
                     {% if current_user.user_type < 2 %}
-                        <a class="btn btn-success" style="width: 180px; height:80px" href="/users/edit">Подать
-                            заявку</a>
+                        <a class="btn btn-success" style="width: 180px; height:80px" href="/users/edit">Submit Application</a>
                     {% else %}
-                        <a class="btn btn-success" style="width: 180px; height:80px" href="/users/edit">Редактировать
-                            информацию</a>
+                        <a class="btn btn-success" style="width: 180px; height:80px" href="/users/edit">Edit Info</a>
                     {% endif %}
-                    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/view">Мои
-                        заказы</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/view">My Orders</a>
                 {% endif %}
                 {% if current_user.user_type == 2 %}
-                    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/assign">Взять
-                        заказ</a>
-                    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/complete/list">Выполнить
-                        заказ</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/assign">Take Order</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/complete/list">Complete Order</a>
                     <a class="btn btn-success" style="width: 180px; height:80px"
-                       href="/couriers/get">Статистика</a>
+                       href="/couriers/get">Statistics</a>
                 {% endif %}
                 {% if current_user.user_type == 3 %}
-                    <a class="btn btn-success" style="width: 180px; height:80px" href="/couriers/delete">Удалить
-                        курьера</a>
-                    <a class="btn btn-success" style="width: 180px; height:80px" href="/couriers">Утвердить
-                        курьера</a>
-                    <a class="btn btn-success" style="width: 180px; height:80px" href="/admins">Назначить
-                        админов</a>
-                    <a class="btn btn-success" style="width: 180px; height:80px" href="/history">История</a>
-                    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/view">Заказы в
-                        системе</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px" href="/couriers/delete">Delete Courier</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px" href="/couriers">Approve Courier</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px" href="/admins">Assign Admins</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px" href="/history">History</a>
+                    <a class="btn btn-success" style="width: 180px; height:80px" href="/orders/view">System Orders</a>
                 {% endif %}
 
             {% endif %}

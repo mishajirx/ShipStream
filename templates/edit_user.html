@@ -1,47 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Заявка на должность "Курьер"</h1>
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <script src="../static/checkbox.js"></script>
+<h1>Courier Application</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <script src="../static/checkbox.js"></script>
 
-        <p>
-            {{ form.is_courier.label }}
-            {{ form.is_courier(type="checkbox", id="myCheck", onclick="myFunction(\"myCheck\", \"courier_info\")") }}
+    <p>
+        {{ form.is_courier.label }}
+        {{ form.is_courier(type="checkbox", id="myCheck", onclick="myFunction(\"myCheck\", \"courier_info\")") }}
+    </p>
+    {# { <input type="checkbox" id="myCheck" onclick="myFunction()"> ХОЧУ БЫТЬ КУРЬЕРОМ#}
+
+
+    <div id="courier_info" style="display:none">
+
+
+        {{ form.type_of_courier.label }}<br>
+        {{ form.type_of_courier(class="form-control") }}<br>
+
+        {{ form.region.label }}<br>
+        {{ form.region(class="form-control") }}<br>
+
+        {{ form.workhours_start.label }}<br>
+        {{ form.workhours_start(class="form-control") }}<br>
+
+        {{ form.workhours_end.label }}<br>
+        {{ form.workhours_end(class="form-control") }}<br>
+
+
+
+
+        {% for error in form.type_of_courier.errors + form.region.errors + form.workhours_start.errors +
+        form.workhours_end.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
         </p>
-{#        {        <input type="checkbox" id="myCheck" onclick="myFunction()"> ХОЧУ БЫТЬ КУРЬЕРОМ#}
+        {% endfor %}
 
 
-        <div id="courier_info" style="display:none">
+    </div>
 
-
-            {{ form.type_of_courier.label }}<br>
-            {{ form.type_of_courier(class="form-control") }}<br>
-
-            {{ form.region.label }}<br>
-            {{ form.region(class="form-control") }}<br>
-
-            {{ form.workhours_start.label }}<br>
-            {{ form.workhours_start(class="form-control") }}<br>
-
-            {{ form.workhours_end.label }}<br>
-            {{ form.workhours_end(class="form-control") }}<br>
-
-
-
-
-            {% for error in form.type_of_courier.errors + form.region.errors + form.workhours_start.errors + form.workhours_end.errors %}
-                <p class="alert alert-danger" role="alert">
-                    {{ error }}
-                </p>
-            {% endfor %}
-
-
-        </div>
-
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        {{ message }}
-    </form>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{ message }}
+</form>
 
 {% endblock %}
