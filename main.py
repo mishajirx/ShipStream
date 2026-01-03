@@ -26,7 +26,7 @@ from data.help_functions import *
 from data.variables import *
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+app.config['SECRET_KEY'] = 'misha_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -583,10 +583,12 @@ def orders_on_map_for_admin():
             coordinates = get_coordinates(order.address)
             points.append(coordinates + ",pm2rdl" + str(order.id))
             max_distance = max(max_distance, count_distance(coordinates, COURIER_COORDINATES))
+    points_str = "|".join(points)
 
-    map_request = f"https://static-maps.yandex.ru/1.x/?apikey={API_KEY}&l=map&ll={COURIER_COORDINATES}" \
-                  f"&pt={'~'.join(points)}" \
-                  f"&size=650,450"
+    map_request = f"https://maps.googleapis.com/maps/api/staticmap?" \
+                  f"size=650x450&markers=color:blue%7Clabel:S%7C{points_str}&" \
+                  f"markers=color:red%7Clabel:C%7C{COURIER_COORDINATES}&" \
+                  f"key={STATIC_API_KEY}"
 
     print(map_request)
 
@@ -745,7 +747,7 @@ def orders_on_map():
     if max_distance > 1:
         zoom = ""
 
-    map_request = f"https://static-maps.yandex.ru/1.x/?apikey={API_KEY}&l=map&ll={COURIER_COORDINATES}" \
+    map_request = f"https://static-maps.yandex.ru/v1/?apikey={STATIC_API_KEY}&l=map&ll={COURIER_COORDINATES}" \
                   f"&pt={courier_position}{points}" \
                   f"&size=650,450{zoom}"
 
@@ -757,7 +759,8 @@ def orders_on_map():
     with open("static/" + map_file, "wb") as file:
         file.write(response.content)
 
-    return render_template('show_map.html', title="Address and Courier", file=map_file, backlink="/orders/complete/list")
+    return render_template('show_map.html', title="Address and Courier", file=map_file,
+                           backlink="/orders/complete/list")
 
 
 @app.route('/users/edit', methods=['POST', 'GET'])
@@ -835,7 +838,7 @@ def get_map_of_order(order_id):
     order = db_sess.query(Order).filter(Order.id == order_id).first()
     coordinates = get_coordinates(order.address)
 
-    courier_position = ""
+    courier_position = "42.334,-71.118"
     zoom = "&z=14"
 
     if order.orders_courier:
@@ -844,9 +847,10 @@ def get_map_of_order(order_id):
         if distance > 1:
             zoom = ""
 
-    map_request = f"https://static-maps.yandex.ru/1.x/?apikey={API_KEY}&l=map&ll={coordinates}&" \
-                  f"pt={coordinates},pm2rdl{courier_position}" \
-                  f"&size=650,450{zoom}"
+    map_request = f"https://maps.googleapis.com/maps/api/staticmap?center={coordinates}&" \
+                  f"size=650x450&markers=color:blue%7Clabel:S%7C{coordinates}&" \
+                  f"markers=color:red%7Clabel:S%7C{courier_position}&" \
+                  f"key={STATIC_API_KEY}"
 
     print(map_request)
     response = requests.get(map_request)

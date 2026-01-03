@@ -10,7 +10,8 @@ import requests
 
 from data.users import User
 
-API_KEY = '40d1649f-0493-4b70-98ba-98533de7710b'
+API_KEY = 'c5f0691a-e271-43b3-a4c6-7fd7b6d0533a'
+STATIC_API_KEY = "AIzaSyCR21Jo0yYeIdZmOgsY_7wD4OUQRoFfE3s"
 
 
 def is_t_ok(l1, l2) -> bool:
@@ -38,7 +39,7 @@ def is_t_ok(l1, l2) -> bool:
 
 def get_coordinates(address: str) -> (int, int):
     address.replace(',', ',+')
-    coords = f"http://geocode-maps.yandex.ru/1.x/?apikey={API_KEY}" \
+    coords = f"http://geocode-maps.yandex.ru/v1/?apikey={API_KEY}" \
              f"&geocode={address}&format=json"
 
     print(coords)
@@ -46,7 +47,8 @@ def get_coordinates(address: str) -> (int, int):
 
     json_response = response.json()
     xy = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]['Point']['pos']
-    xy = f'{xy.replace(" ", ",")}'
+    # xy = f'{xy.replace(" ", ",")}'
+    xy = ','.join(xy.split()[::-1])
     return xy
 
 
